@@ -1,10 +1,21 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "./styles.css"
 import { NewTodoForm } from "./NewTodoForm"
 import { TodoList } from "./TodoList"
 
 export default function App() {
-  const [todos, setTodos] = useState([])
+  const [todos, setTodos] = useState(() => {
+    const localValue = localStorage.getItem("ITEMS")
+    if (localValue == null) return []
+    return JSON.parse(localValue);
+  })
+
+  // TODO This is a hook but where is it comming from? What other hooks are there?
+  // They HAVE to be at the top of the file and cannot be ran conditionally.
+  useEffect(() => {
+    // TODO Where tf is localStorage coming from?
+    localStorage.setItem("ITEMS", JSON.stringify(todos))
+  }, [todos])
 
   function addTodo(title) {
     // TODO look into wtf is this?
